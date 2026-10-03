@@ -1,0 +1,14 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "paths": {
+      "@gymaxxing/engine": ["../../packages/engine/src/index.ts"],
+      "@gymaxxing/exercise-db": ["../../packages/exercise-db/src/index.ts"],
+      "@gymaxxing/schemas": ["../../packages/schemas/src/index.ts"],
+      "@gymaxxing/theme": ["../../packages/theme/src/index.ts"],
+      "@gymaxxing/native": ["../../modules/gymaxxing-native/src/index.ts"]
+    }
+  },
+  "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"]
+}

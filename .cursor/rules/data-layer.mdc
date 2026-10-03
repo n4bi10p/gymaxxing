@@ -1,0 +1,13 @@
+---
+description: Local-first PowerSync schema and sync rules stay in lockstep.
+globs: "{packages/schemas/**/*.ts,apps/mobile/src/data/**/*.ts,infra/**/*}"
+alwaysApply: false
+---
+
+# Data layer
+
+- Schema changes update three places together: the Drizzle tables in `packages/schemas`, the Supabase migration in `infra/supabase`, and the PowerSync sync rules in `infra/powersync`.
+- Ids are UUIDv7. Rows have `updated_at` and `deleted_at`. Conflicts are last-write-wins.
+- The app boots PowerSync without `connect()`. Cloud sync connects only after the user opts in.
+- Never put the AI provider key, Supabase key, or PowerSync URL into a synced table. Those live in secure storage.
+- Repositories hide SQL. Screens do not import the database client.

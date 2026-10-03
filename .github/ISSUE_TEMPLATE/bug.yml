@@ -1,0 +1,18 @@
+name: Bug
+description: Something in Gymaxxing broke
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+    validations:
+      required: true
+  - type: textarea
+    id: expect
+    attributes:
+      label: What you expected
+  - type: input
+    id: device
+    attributes:
+      label: Device and OS
+      placeholder: iPhone 14, iOS 26.6.2

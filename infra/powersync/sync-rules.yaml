@@ -1,0 +1,12 @@
+bucket_definitions:
+  user_data:
+    parameters: select request.user_id() as user_id
+    data:
+      - select * from profile where user_id = bucket.user_id
+      - select * from custom_exercises where user_id = bucket.user_id
+      - select * from routines where user_id = bucket.user_id
+      - select * from routine_exercises where user_id = bucket.user_id
+      - select * from workouts where user_id = bucket.user_id
+      - select * from workout_exercises where user_id = bucket.user_id
+      - select * from sets where user_id = bucket.user_id
+      - select * from body_metrics where user_id = bucket.user_id

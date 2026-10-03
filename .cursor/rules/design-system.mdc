@@ -1,0 +1,16 @@
+---
+description: Gymaxxing visual system. Tokens, accent, and glass only.
+globs: apps/mobile/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# Design system
+
+Read `DESIGN.md` before adding or changing UI.
+
+- No hex colors, rgba values, radii, or spacing numbers in screen files. Use `theme` from `useTheme()`.
+- Accent only through `theme.color.accent`. The primary CTA uses `theme.color.cta`, never the accent fill.
+- Backdrop glass only through `GlassSurface` with `backdrop`. Content cards use surface glass.
+- Do not stack glass on iOS native tabs, toolbars, or system sheets.
+- Support light and dark. Do not branch layout on scheme except where `DESIGN.md` says the material changes.
+- Copy is calm and precise. The product name may be playful; the interface is not.

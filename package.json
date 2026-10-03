@@ -1,0 +1,18 @@
+{
+  "name": "gymaxxing",
+  "private": true,
+  "packageManager": "pnpm@10.34.6",
+  "engines": {
+    "node": ">=22"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild", "@shopify/react-native-skia", "unrs-resolver"]
+  },
+  "scripts": {
+    "mobile": "pnpm --filter @gymaxxing/mobile start",
+    "android": "pnpm --filter @gymaxxing/mobile android",
+    "typecheck": "pnpm -r --if-present typecheck",
+    "lint": "pnpm -r --if-present lint",
+    "test": "pnpm -r --if-present test"
+  }
+}

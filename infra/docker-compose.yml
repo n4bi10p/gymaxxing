@@ -1,0 +1,25 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - gymaxxing_pg:/var/lib/postgresql/data
+
+  powersync:
+    image: journeyapps/powersync-service:latest
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./powersync/sync-rules.yaml:/config/sync-rules.yaml:ro
+    environment:
+      PS_DATABASE_URI: postgresql://postgres:postgres@db:5432/postgres
+      PS_PORT: "8080"
+    depends_on:
+      - db
+
+volumes:
+  gymaxxing_pg:

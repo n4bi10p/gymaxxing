@@ -1,0 +1,14 @@
+---
+description: Expo SDK conventions, dev client, and generated native projects.
+globs: "{apps/mobile/**/*.{ts,tsx,json},modules/**/*}"
+alwaysApply: false
+---
+
+# Expo
+
+- Add React Native and Expo packages with `pnpm exec expo install` from `apps/mobile`, not a direct version pin.
+- This app uses a dev client. Do not target Expo Go.
+- Platform-specific UI goes in `.ios.tsx` and `.android.tsx`.
+- Never commit `ios/` or `android/`. Change native config through `app.json` and local Expo modules.
+- Reanimated worklets stay in worklet functions. Do not capture theme objects inside a worklet unless they are shared values.
+- Check the installed Expo SDK version before using a Router or native API. SDK 57 native tabs are `expo-router/unstable-native-tabs`.

@@ -1,0 +1,14 @@
+---
+description: Pure TypeScript training engine. No UI or device APIs.
+globs: packages/engine/**/*.ts
+alwaysApply: false
+---
+
+# Engine
+
+`packages/engine` is pure TypeScript.
+
+- Do not import React, React Native, Expo, or any I/O.
+- Every exported function has a Vitest test in `packages/engine`, including edge cases (empty, zero, incomplete sets).
+- Volume, Epley, PR detection, progression, and unit conversion stay deterministic.
+- The engine suggests. It does not write workout history.

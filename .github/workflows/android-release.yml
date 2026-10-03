@@ -1,0 +1,52 @@
+name: Android release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - name: Android SDK
+        uses: android-actions/setup-android@v3
+      - run: pnpm install --frozen-lockfile
+      - name: Prebuild
+        working-directory: apps/mobile
+        run: pnpm exec expo prebuild --platform android --no-install
+      - name: Decode keystore
+        if: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' }}
+        working-directory: apps/mobile/android
+        run: echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > release.keystore
+      - name: Assemble release
+        working-directory: apps/mobile/android
+        env:
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          if [ -f release.keystore ]; then
+            echo "GYMAXXING_RELEASE_STORE_FILE=$(pwd)/release.keystore" >> gradle.properties
+            echo "GYMAXXING_RELEASE_STORE_PASSWORD=$ANDROID_KEYSTORE_PASSWORD" >> gradle.properties
+            echo "GYMAXXING_RELEASE_KEY_ALIAS=$ANDROID_KEY_ALIAS" >> gradle.properties
+            echo "GYMAXXING_RELEASE_KEY_PASSWORD=$ANDROID_KEY_PASSWORD" >> gradle.properties
+          fi
+          chmod +x gradlew
+          ./gradlew assembleRelease --no-daemon
+      - uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: apps/mobile/android/app/build/outputs/apk/release/*.apk

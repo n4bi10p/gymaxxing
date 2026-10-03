@@ -1,0 +1,9 @@
+name: Feature
+description: A change to Gymaxxing
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: What should the app do
+    validations:
+      required: true
