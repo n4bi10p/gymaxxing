@@ -14,6 +14,16 @@ describe('uuidv7', () => {
     const later = uuidv7(1_700_000_100_000);
     expect(earlier < later).toBe(true);
   });
+
+  it('still builds an id when crypto is missing', () => {
+    const original = globalThis.crypto;
+    Object.defineProperty(globalThis, 'crypto', { value: undefined, configurable: true });
+    try {
+      expect(uuidv7(1_700_000_000_000)).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/);
+    } finally {
+      Object.defineProperty(globalThis, 'crypto', { value: original, configurable: true });
+    }
+  });
 });
 
 describe('syncStatusLabel', () => {

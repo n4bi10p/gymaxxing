@@ -4,17 +4,20 @@ import { useState } from 'react';
 import { PRESET_SEEDS } from '@gymaxxing/theme';
 import { saveProfile } from '../src/data/repository';
 import { AppText, Chip, Field, PrimaryButton, Row, Screen } from '../src/ui/controls';
-import { useAppearance } from '../src/ui/ThemeProvider';
+import { useAppearance, useTheme } from '../src/ui/ThemeProvider';
 
 const GOALS = ['Strength', 'Muscle', 'General fitness'];
 
 export default function Onboarding() {
   const router = useRouter();
   const db = usePowerSync();
+  const theme = useTheme();
   const { appearance, setAppearance } = useAppearance();
   const [name, setName] = useState('');
   const [goal, setGoal] = useState(GOALS[0] ?? 'Strength');
   const [unit, setUnit] = useState<'kg' | 'lb'>('kg');
+  const [error, setError] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
 
   return (
     <Screen title="Set up">
@@ -45,9 +48,17 @@ export default function Onboarding() {
           />
         ))}
       </Row>
+      {error ? (
+        <AppText variant="bodySmall" color={theme.color.semantic.danger}>
+          {error}
+        </AppText>
+      ) : null}
       <PrimaryButton
-        label="Continue"
+        label={busy ? 'Saving' : 'Continue'}
         onPress={() => {
+          if (busy) return;
+          setBusy(true);
+          setError(null);
           const accentKind = appearance.accent.kind === 'preset' ? appearance.accent.id : appearance.accent.kind;
           void saveProfile(db, {
             name: name.trim(),
@@ -59,7 +70,14 @@ export default function Onboarding() {
             accentKind,
             accentSeed: appearance.accent.kind === 'custom' ? appearance.accent.seed : null,
             restSeconds: 120,
-          }).then(() => router.replace('/(tabs)'));
+          })
+            .then(() => router.replace('/(tabs)'))
+            .catch((cause: unknown) => {
+              const message = cause instanceof Error ? cause.message : 'Could not save setup.';
+              console.error(`Gymaxxing setup failed: ${message}`);
+              setError(message);
+            })
+            .finally(() => setBusy(false));
         }}
       />
     </Screen>

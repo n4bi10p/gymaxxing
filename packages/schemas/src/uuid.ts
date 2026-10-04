@@ -1,10 +1,17 @@
+function fillRandom(bytes: Uint8Array): void {
+  const cryptoRef = globalThis.crypto;
+  if (cryptoRef?.getRandomValues) {
+    cryptoRef.getRandomValues(bytes as unknown as Uint8Array<ArrayBuffer>);
+    return;
+  }
+  for (let index = 0; index < bytes.length; index += 1) {
+    bytes[index] = Math.floor(Math.random() * 256);
+  }
+}
+
 export function uuidv7(now = Date.now()): string {
   const bytes = new Uint8Array(16);
-  const cryptoRef = globalThis.crypto;
-  if (!cryptoRef?.getRandomValues) {
-    throw new Error('crypto.getRandomValues is required to create ids');
-  }
-  cryptoRef.getRandomValues(bytes);
+  fillRandom(bytes);
   const ts = BigInt(now);
   bytes[0] = Number((ts >> 40n) & 0xffn);
   bytes[1] = Number((ts >> 32n) & 0xffn);
