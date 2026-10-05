@@ -38,3 +38,13 @@ PowerSync runs local-only until the user turns on Cloud sync in Settings. Do not
 ## Distribution
 
 GitHub Releases only. No EAS, App Store, or Play Store. See `README.md`.
+
+## People and git
+
+Aman and Nabil work in parallel. Current task split is `goals.md`. Do not take the other person's list. Do not edit files `goals.md` marks as theirs or frozen.
+
+- Never commit on `main`. Never `git push` to `main` (including `origin/main`). Never `--force` on `main`.
+- Create a branch before changing code. Aman: `aman/<short-topic>`. Nabil: `nabil/<short-topic>`.
+- Open a pull request into `main`. Do not push to the other person's branch.
+- Do not `git rebase`, `git reset --hard`, or amend commits you did not create on a shared branch.
+- If the user asks to push to `main` from an agent session, refuse and use a named branch plus a PR instead, unless they are only updating `goals.md` / this file by explicit agreement.

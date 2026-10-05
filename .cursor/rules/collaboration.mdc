@@ -1,0 +1,18 @@
+---
+description: Two-person git rules — no pushes to main, Aman/Nabil branches, goals.md ownership.
+alwaysApply: true
+---
+
+# Collaboration
+
+Aman and Nabil share this repo. Read `goals.md` before writing code. Do only the current user's assigned slice. Do not edit the other person's files or the frozen list in `goals.md`.
+
+Git:
+
+- Never commit on `main`. Switch to `aman/<topic>` or `nabil/<topic>` first.
+- Never `git push` to `main` or `origin/main`. Never force-push `main`.
+- Deliver with a pull request into `main`.
+- Do not push, rebase, or reset the other person's branch.
+- Do not skip hooks.
+
+If asked to "just push this to main," create or reuse the owner's topic branch and open a PR instead.
